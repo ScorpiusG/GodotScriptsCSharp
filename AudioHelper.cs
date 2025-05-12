@@ -96,7 +96,7 @@ public partial class AudioHelper : Node
         var node = instance.GetAudioStreamPlayer(name);
 		if (node == null)
 		{
-			GD.PushError($"[AudioHelper.PlaySound] The child \"{name}\" does not exist.");
+			GD.PushWarning($"[AudioHelper.PlaySound] The child \"{name}\" does not exist.");
 			return;
 		}
 		node.Play();
@@ -106,7 +106,7 @@ public partial class AudioHelper : Node
         var node = instance.GetAudioStreamPlayer(name);
         if (node == null)
         {
-            GD.PushError($"[AudioHelper.StopSound] The child \"{name}\" does not exist.");
+            GD.PushWarning($"[AudioHelper.StopSound] The child \"{name}\" does not exist.");
             return;
         }
         node.Stop();
@@ -121,7 +121,7 @@ public partial class AudioHelper : Node
         var node = instance.GetAudioStreamPlayer(name);
         if (node == null)
         {
-            GD.PushError($"[AudioHelper.PlayMusic] The child \"{name}\" does not exist.");
+            GD.PushWarning($"[AudioHelper.PlayMusic] The child \"{name}\" does not exist.");
             return;
         }
         node.Play();
@@ -132,7 +132,7 @@ public partial class AudioHelper : Node
         var node = instance.GetAudioStreamPlayer(name);
         if (node == null)
         {
-            GD.PushError($"[AudioHelper.StopMusic] The child \"{name}\" does not exist.");
+            GD.PushWarning($"[AudioHelper.StopMusic] The child \"{name}\" does not exist.");
             return;
         }
         node.Stop();
@@ -141,6 +141,6 @@ public partial class AudioHelper : Node
 
     private AudioStreamPlayer GetAudioStreamPlayer(string name)
     {
-        return data[name];
+        return !data.TryGetValue(name, out AudioStreamPlayer value) ? null : value;
     }
 }
