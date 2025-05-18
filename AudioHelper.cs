@@ -14,6 +14,10 @@
  *		these static methods also exist:
  *		AudioHelper.StopSound(childNameHere);
  *		AudioHelper.StopMusic(childNameHere); // Is also automatically called during PlayMusic
+ *	6. You can use these methods to get and set the audio volume of a bus
+ *	    in a float value ranging from 0f to 1f:
+ *	    GetBusVolumePercent(busName);
+ *	    SetBusVolumePercent(busName, volume);
  *  
  *  Example hierarchy:
  *  Node <-- ATTACH THIS SCRIPT HERE!
@@ -142,5 +146,17 @@ public partial class AudioHelper : Node
     private AudioStreamPlayer GetAudioStreamPlayer(string name)
     {
         return !data.TryGetValue(name, out AudioStreamPlayer value) ? null : value;
+    }
+
+    public static void SetBusVolumePercent(string busName, float volume)
+    {
+        var busIndex = AudioServer.GetBusIndex(busName);
+        AudioServer.SetBusVolumeDb(busIndex, Mathf.LinearToDb(volume));
+    }
+
+    public static float GetBusVolumePercent(string busName)
+    {
+        var busIndex = AudioServer.GetBusIndex(busName);
+        return Mathf.DbToLinear(AudioServer.GetBusVolumeDb(busIndex));
     }
 }
